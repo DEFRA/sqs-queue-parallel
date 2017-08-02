@@ -1,12 +1,12 @@
 ## Note that this project has been forked from https://github.com/bigluck/sqs-queue-parallel a small change was required to allow the support of XML in SQS messages, however the original project isn't being maintained.
 
-# sqs-queue-parallel.js
+# ea-sqs-queue-parallel.js
 
-sqs-queue-parallel is a **node.js** library build on top of **Amazon AWS SQS** with **concurrency and parallel** message poll support.
+ea-sqs-queue-parallel is a **node.js** library build on top of **Amazon AWS SQS** with **concurrency and parallel** message poll support.
 
 You can create a poll of SQS queue watchers, each one can receive 1 or more messages from Amazon SQS.
 
-With sqs-queue-parallel you need just to configure your AWS private keys, setup your one o more `message` event callbacks and wait for new messages to be processed.
+With ea-sqs-queue-parallel you need just to configure your AWS private keys, setup your one o more `message` event callbacks and wait for new messages to be processed.
 
 
 
@@ -43,7 +43,7 @@ queue.on('error', function (err)
 You can download and install this library using Node Package Manager (npm):
 
 ```bash
-npm install sqs-queue-parallel --save
+npm install ea-sqs-queue-parallel --save
 ```
 
 

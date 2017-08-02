@@ -1,15 +1,15 @@
 {
-	"name": "sqs-queue-parallel",
+	"name": "ea-sqs-queue-parallel",
 	"description": "Create a poll of Amazon SQS queue watchers and each one can receive 1+ messages",
 	"main": "dist/sqs-queue-parallel",
-	"homepage": "https://github.com/bigluck/sqs-queue-parallel",
+	"homepage": "https://github.com/DEFRA/sqs-queue-parallel",
 	"author": "Luca Bigon",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"license": "MIT",
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/bigluck/sqs-queue-parallel/raw/master/LICENSE"
+			"url": "https://github.com/DEFRA/sqs-queue-parallel/raw/master/LICENSE"
 		}
 	],
 	"keywords": [
@@ -21,8 +21,8 @@
 	],
 	"maintainers": [
 		{
-			"name": "Luca Bigon",
-			"website": "http://www.exit4web.net/"
+			"name": "Environment Agency",
+			"website": "https://github.com/DEFRA"
 		}
 	],
 	"scripts": {
@@ -30,10 +30,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/bigluck/sqs-queue-parallel.git"
+		"url": "https://github.com/DEFRA/sqs-queue-parallel.git"
 	},
 	"bugs": {
-		"url": "https://github.com/bigluck/sqs-queue-parallel/issues"
+		"url": "https://github.com/DEFRA/sqs-queue-parallel/issues"
 	},
 	"dependencies": {
 		"aws-sdk": "^2.0.0-rc11",

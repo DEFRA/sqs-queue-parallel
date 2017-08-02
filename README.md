@@ -1,3 +1,5 @@
+## Note that this project has been forked from https://github.com/bigluck/sqs-queue-parallel a small change was required to allow the support of XML in SQS messages, however the original project isn't being maintained.
+
 # sqs-queue-parallel.js
 
 sqs-queue-parallel is a **node.js** library build on top of **Amazon AWS SQS** with **concurrency and parallel** message poll support.

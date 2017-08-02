@@ -1,0 +1,118 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/tedd/.nvm/versions/node/v4.8.4/bin/node',
+1 verbose cli   '/home/tedd/.nvm/versions/node/v4.8.4/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@2.15.11
+3 info using node@v4.8.4
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/tedd/sqs-queue-parallel',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/tedd/.npm/@envage/ea-sqs-queue-parallel/0.1.8/package.tgz not in flight; packing
+9 verbose correctMkdir /home/tedd/.npm correctMkdir not in flight; initializing
+10 verbose tar pack [ '/home/tedd/.npm/@envage/ea-sqs-queue-parallel/0.1.8/package.tgz',
+10 verbose tar pack   '/home/tedd/sqs-queue-parallel' ]
+11 verbose tarball /home/tedd/.npm/@envage/ea-sqs-queue-parallel/0.1.8/package.tgz
+12 verbose folder /home/tedd/sqs-queue-parallel
+13 info prepublish @envage/ea-sqs-queue-parallel@0.1.8
+14 verbose addLocalTarball adding from inside cache /home/tedd/.npm/@envage/ea-sqs-queue-parallel/0.1.8/package.tgz
+15 verbose correctMkdir /home/tedd/.npm correctMkdir not in flight; initializing
+16 silly cache afterAdd @envage/ea-sqs-queue-parallel@0.1.8
+17 verbose afterAdd /home/tedd/.npm/@envage/ea-sqs-queue-parallel/0.1.8/package/package.json not in flight; writing
+18 verbose correctMkdir /home/tedd/.npm correctMkdir not in flight; initializing
+19 verbose afterAdd /home/tedd/.npm/@envage/ea-sqs-queue-parallel/0.1.8/package/package.json written
+20 silly publish { name: '@envage/ea-sqs-queue-parallel',
+20 silly publish   description: 'Create a poll of Amazon SQS queue watchers and each one can receive 1+ messages',
+20 silly publish   main: 'dist/sqs-queue-parallel',
+20 silly publish   homepage: 'https://github.com/DEFRA/sqs-queue-parallel',
+20 silly publish   author: { name: 'Luca Bigon' },
+20 silly publish   version: '0.1.8',
+20 silly publish   license: 'MIT',
+20 silly publish   licenses:
+20 silly publish    [ { type: 'MIT',
+20 silly publish        url: 'https://github.com/DEFRA/sqs-queue-parallel/raw/master/LICENSE' } ],
+20 silly publish   keywords: [ 'sqs', 'queue', 'poll', 'amazon', 'aws' ],
+20 silly publish   maintainers: [ { name: 'Environment Agency' } ],
+20 silly publish   scripts: { build: 'grunt dist' },
+20 silly publish   repository:
+20 silly publish    { type: 'git',
+20 silly publish      url: 'git+https://github.com/DEFRA/sqs-queue-parallel.git' },
+20 silly publish   bugs: { url: 'https://github.com/DEFRA/sqs-queue-parallel/issues' },
+20 silly publish   dependencies: { 'aws-sdk': '^2.0.0-rc11', async: '^0.2.10', lodash: '^2.4.1' },
+20 silly publish   devDependencies:
+20 silly publish    { grunt: '^0.4.4',
+20 silly publish      'coffee-script': '^1.7.1',
+20 silly publish      nodemon: '^1.0.15',
+20 silly publish      'grunt-contrib-coffee': '^0.10.1',
+20 silly publish      'grunt-banner': '^0.2.2' },
+20 silly publish   readme: '## Note that this project has been forked from https://github.com/bigluck/sqs-queue-parallel a small change was required to allow the support of XML in SQS messages, however the original project isn\'t being maintained.\n\n# ea-sqs-queue-parallel.js\n\nea-sqs-queue-parallel is a **node.js** library build on top of **Amazon AWS SQS** with **concurrency and parallel** message poll support.\n\nYou can create a poll of SQS queue watchers, each one can receive 1 or more messages from Amazon SQS.\n\nWith ea-sqs-queue-parallel you need just to configure your AWS private keys, setup your one o more `message` event callbacks and wait for new messages to be processed.\n\n\n\n# Example\n\n```javascript\nvar SqsQueueParallel = require(\'sqs-queue-parallel\');\n\n// Simple configuration:\n//  - 2 concurrency listeners\n//  - each listener can receive up to 4 messages\n// With this configuration you could receive and parse 8 `message` events in parallel\nvar queue = new SqsQueueParallel({\n\tname: "sqs-test",\n\tmaxNumberOfMessages: 4,\n\tconcurrency: 2\n});\nqueue.on(\'message\', function (e)\n{\n\tconsole.log(\'New message: \', e.metadata, e.data.MessageId)\n\te.deleteMessage(function(err, data) {\n\t    e.next();\n\t});\n});\nqueue.on(\'error\', function (err)\n{\n\tconsole.log(\'There was an error: \', err);\n});\n```\n\n\n# Download\n\nYou can download and install this library using Node Package Manager (npm):\n\n```bash\nnpm install ea-sqs-queue-parallel --save\n```\n\n\n# Summary\n\n* [Constructor](#constructor):\n\t* new SqsQueueParallel(options = {})\n* [Methods](#methods):\n\t* sendMessage(message = {}, callback)\n\t* deleteMessage(receiptHandle, callback)\n\t* changeMessageVisibility(receiptHandle, timeout, callback)\n* [Properties](#properties):\n\t* client\n\t* url\n* [Events](#events):\n\t* connection\n\t* connect\n\t* message\n\t* error\n\n* Global env:\n\t* AWS_REGION\n\t* AWS_ACCESS_KEY\n\t* AWS_SECREY_KEY\n\n\n\n# Constructor\n\n\n## new SqsQueueParallel(options = {})\n\nFirst you need to initialize a new object instance with a configuration.\n\n**Examples:**\n\nConstructing an object\n```javascript\nvar queue = new SqsQueueParallel({ name: \'sqs-test\' });\n```\n\n**Options Hash (options):**\n\n* **name** (String) — **_Required_**: name of the remote queue to be watched\n* **region** (String) — the region to send/read service requests. Default is `process.env.AWS_REGION`\n* **accessKeyId** (String) — your AWS access key ID. Default is `process.env.AWS_ACCESS_KEY`\n* **secretAccessKey** (String) — your AWS secret access key. Default is `process.env.AWS_SECRET_KEY`\n* **visibilityTimeout** (Integer) — duration (in seconds) that the received messages are hidden from subsequent retrieve requests after being retrieved by a ReceiveMessage request.\n* **waitTimeSeconds** (Integer) — duration (in seconds) for which the call will wait for a message to arrive in the queue before returning. If a message is available, the call will return sooner than WaitTimeSeconds. Default is 20\n* **maxNumberOfMessages** (Integer) — maximum number of messages to return. Amazon SQS never returns more messages than this value but may return fewer. Default is 1\n* **concurrency** (Integer) — number of concurrency fetcher to start. Default is 1\n* **debug** (Boolean) — enable debug mode. Default is false\n\n\n**Important**:\n\nEach `concurrency` queue can read `maxNumberOfMessages` messages from Amazon SQS.\n\nFor example, **2** `concurrency` queue with **5** `maxNumberOfMessages` can trigger a max of **5 * 2 = 10** `message` events; so it\'s very important to be carefull, expecially if you\'re working with I/O streams.\n\n\n\n# Properties\n\n\n## queue.client\n\nReturns the SQS client object used by the queue.\n\n\n## queue.url\n\nUrl of the connected queue.\n\n\n\n# Methods\n\n\n## queue.sendMessage(params = {}, callback)\n\nBuild on the top of `SQS.sendMessage()` allow you to easly push a message to the connected queue.\n\n**Parameters:**\n\n* **params** (Object)\n\t* body (Any type) — default to {}\n\t\n\t\tAn arbitrary message, could be a string, a number or a object.\n\t* delay (Integer)\n\t\n\t\tThe number of seconds (0 to 900 - 15 minutes) to delay a specific message. Messages with a positive DelaySeconds value become available for processing after the delay time is finished. If you don\'t specify a value, the default value for the queue applies\n\n**Callback (callback):**\n\n```javascript\nfunction(err, data) {}\n```\n\nFor more information take checkout the [official AWS documentation](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SQS.html#sendMessage-property).\n\n**Esample:**\n\n```javascript\nvar SqsQueueParallel = require(\'src/sqs-queue-parallel\');\n\nvar queue = new SqsQueueParallel({ name: "sqs-test" });\nqueue.sendMessage({\n\tbody: \'my message\',\n\tdelay: 10\n});\nqueue.sendMessage({\n\tbody: [1, 2, 3]\n}, function (err, data)\n{\n\tif (err)\n\t\tconsole.log(\'There was a problem: \', err);\n\telse\n\t\tconsole.log(\'Item pushed\', data);\n});\n```\n\n\n## queue.changeMessageVisibility(receiptHandle, timeout, callback)\n\nBuild on the top of `SQS.changeMessageVisibility()` allow you to easly delay a message from the connected queue.\n\n**Parameters:**\n\n* **receipHandler** (String)\n\n\tThe receipt handle associated with the message to delay.\n\n* **timeout** (Integer)\n\n\tThe new value (in seconds - from 0 to 43200 - maximum 12 hours) for the message\'s visibility timeout.\n\n**Callback (callback):**\n\n```javascript\nfunction(err, data) {}\n```\n\nFor more information take checkout the official [AWS documentation](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SQS.html#changeMessageVisibility-property).\n\n**Esample:**\n\n```javascript\nvar SqsQueueParallel = require(\'src/sqs-queue-parallel\');\n\nvar queue = new SqsQueueParallel({ name: "sqs-test" });\nqueue.changeMessageVisibility(\'receipt-handle-to-delay-1\', 30);\nqueue.on(\'message\', function (job)\n{\n\tif (myTest is true)\n\t\tjob.deleteMessage();\n\telse\n\t\tjob.changeMessageVisibility(30);\n\tjob.next();\n});\n```\n\n\n## queue.deleteMessage(receiptHandle, callback)\n\nBuild on the top of `SQS.deleteMessage()` allow you to easly delete a message from the connected queue.\n\n**Parameters:**\n\n* **receipHandler** (String)\n\n\tThe receipt handle associated with the message to delete.\n\n**Callback (callback):**\n\n```javascript\nfunction(err, data) {}\n```\n\nFor more information take checkout the official [AWS documentation](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SQS.html#deleteMessage-property).\n\n**Example:**\n\n```javascript\nvar SqsQueueParallel = require(\'src/sqs-queue-parallel\');\n\nvar queue = new SqsQueueParallel({ name: "sqs-test" });\nqueue.deleteMessage(\'receipt-handle-to-delete-1\');\nqueue.on(\'message\', function (job)\n{\n\tif (myTest is true)\n\t\tjob.deleteMessage(function(err, data) {\n\t\t    job.next();\n\t\t});\n});\n```\n\n\n\n# Events\n\n\n## connection\n\n```javascript\nfunction(urls) { }\n```\n\nTriggered when a connection is established with the remote server.\n\n* **urls** (Array): list of all remotes urls\n\n\n## connect\n\n```javascript\nfunction(url) { }\n```\n\nTriggered when the required queue `name` is found in the remote list of queues.\n\n* **url** (Object): url of the connected queue\n\n\n## message\n\n```javascript\nfunction(message) { }\n```\n\nEvent triggered each time a new message has been received from the remote queue.\n\n* **message** (Object)\n\t* type (String): default is "Message"\n\t* data (Unknown): JSON.parsed message.Body or a string (if could not be parsed)\n\t* message (Object): reference to the received message\n\t* metadata (Object): reference to the metadata of the received message\n\t* name (String): name of the remote queue\n\t* url (String): url of the connected queue\n\t* **deleteMessage(callback)** (Function):\n\t\n\t\tHelper to deleteMessage (or `SQS.deleteMessage()`) when the job is completed; `callback` is the same of the public `deleteMessage()` method\n\t* **changeMessageVisibility(timeout, callback)** (Function):\n\t\n\t\tHelper to changeMessageVisibility (or `SQS.changeMessageVisibility()`) when the job is completed; `callback` is the same of the public `changeMessageVisibility()` method\n\t* **delay(timeout, callback)** (Function):\n\t\n\t\tHelper to changeMessageVisibility (or `SQS.changeMessageVisibility()`) without completing the job; `callback` is the same of the public `changeMessageVisibility()` method\n\t* **sendMessage(params = {}, callback)** (Function): send a new message in the queue\n\t* **next()** (Function): call this method when you\'ve completed your jobs in the event callback.\n\n\n## error\n\n```javascript\nfunction(error) { }\n```\n\n\n\n# License\n\n(The MIT License)\n\nCopyright (c) 2014 Luca Bigon\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n',
+20 silly publish   readmeFilename: 'README.md',
+20 silly publish   gitHead: '2aa0efc9aca5320ddf10470998e500afc23b84d9',
+20 silly publish   _id: '@envage/ea-sqs-queue-parallel@0.1.8',
+20 silly publish   _shasum: 'ea3f12840be639451f948e76510fce908b48735c',
+20 silly publish   _from: '.' }
+21 verbose getPublishConfig undefined
+22 silly mapToRegistry name @envage/ea-sqs-queue-parallel
+23 silly mapToRegistry scope (from package name) @envage
+24 verbose mapToRegistry no registry URL found in name for scope @envage
+25 silly mapToRegistry using default registry
+26 silly mapToRegistry registry https://registry.npmjs.org/
+27 silly mapToRegistry data Result {
+27 silly mapToRegistry   raw: '@envage/ea-sqs-queue-parallel',
+27 silly mapToRegistry   scope: '@envage',
+27 silly mapToRegistry   name: '@envage/ea-sqs-queue-parallel',
+27 silly mapToRegistry   rawSpec: '',
+27 silly mapToRegistry   spec: 'latest',
+27 silly mapToRegistry   type: 'tag' }
+28 silly mapToRegistry uri https://registry.npmjs.org/@envage%2fea-sqs-queue-parallel
+29 verbose publish registryBase https://registry.npmjs.org/
+30 silly publish uploading /home/tedd/.npm/@envage/ea-sqs-queue-parallel/0.1.8/package.tgz
+31 verbose request uri https://registry.npmjs.org/@envage%2fea-sqs-queue-parallel
+32 verbose request sending authorization for write operation
+33 info attempt registry request try #1 at 8:18:28 AM
+34 verbose request using bearer token for auth
+35 verbose request id 6e5466ea4e48d72c
+36 http request PUT https://registry.npmjs.org/@envage%2fea-sqs-queue-parallel
+37 http 402 https://registry.npmjs.org/@envage%2fea-sqs-queue-parallel
+38 verbose headers { 'content-type': 'application/json',
+38 verbose headers   'cache-control': 'max-age=0',
+38 verbose headers   'content-length': '119',
+38 verbose headers   'accept-ranges': 'bytes',
+38 verbose headers   date: 'Wed, 02 Aug 2017 07:18:29 GMT',
+38 verbose headers   via: '1.1 varnish',
+38 verbose headers   connection: 'keep-alive',
+38 verbose headers   'x-served-by': 'cache-lhr6322-LHR',
+38 verbose headers   'x-cache': 'MISS',
+38 verbose headers   'x-cache-hits': '0',
+38 verbose headers   'x-timer': 'S1501658309.676867,VS0,VE908' }
+39 verbose request invalidating /home/tedd/.npm/registry.npmjs.org/_40envage_252fea-sqs-queue-parallel on PUT
+40 error publish Failed PUT 402
+41 verbose stack Error: You need a paid account to perform this action. For more info, visit: https://www.npmjs.com/private-modules : @envage/ea-sqs-queue-parallel
+41 verbose stack     at makeError (/home/tedd/.nvm/versions/node/v4.8.4/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+41 verbose stack     at CachingRegistryClient.<anonymous> (/home/tedd/.nvm/versions/node/v4.8.4/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+41 verbose stack     at Request._callback (/home/tedd/.nvm/versions/node/v4.8.4/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+41 verbose stack     at Request.self.callback (/home/tedd/.nvm/versions/node/v4.8.4/lib/node_modules/npm/node_modules/request/request.js:187:22)
+41 verbose stack     at emitTwo (events.js:87:13)
+41 verbose stack     at Request.emit (events.js:172:7)
+41 verbose stack     at Request.<anonymous> (/home/tedd/.nvm/versions/node/v4.8.4/lib/node_modules/npm/node_modules/request/request.js:1044:10)
+41 verbose stack     at emitOne (events.js:77:13)
+41 verbose stack     at Request.emit (events.js:169:7)
+41 verbose stack     at IncomingMessage.<anonymous> (/home/tedd/.nvm/versions/node/v4.8.4/lib/node_modules/npm/node_modules/request/request.js:965:12)
+42 verbose statusCode 402
+43 verbose pkgid @envage/ea-sqs-queue-parallel
+44 verbose cwd /home/tedd/sqs-queue-parallel
+45 error Linux 4.4.0-87-generic
+46 error argv "/home/tedd/.nvm/versions/node/v4.8.4/bin/node" "/home/tedd/.nvm/versions/node/v4.8.4/bin/npm" "publish"
+47 error node v4.8.4
+48 error npm  v2.15.11
+49 error code E402
+50 error You need a paid account to perform this action. For more info, visit: https://www.npmjs.com/private-modules : @envage/ea-sqs-queue-parallel
+51 error If you need help, you may report this error at:
+51 error     <https://github.com/npm/npm/issues>
+52 verbose exit [ 1, true ]
